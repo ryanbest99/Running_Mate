@@ -15,6 +15,7 @@ const inputElevation = document.querySelector(".form__input--elevation");
   2. get leaflet.js library
   3. modify the popup and text */
 
+let map, mapEvent;
 // Get Geolocation API
 if (navigator.geolocation)
   navigator.geolocation.getCurrentPosition(
@@ -24,33 +25,22 @@ if (navigator.geolocation)
       console.log(latitude, longitude);
 
       // Implement Leaflet
-      var map = L.map("map").setView([latitude, longitude], 13);
+      map = L.map("map").setView([latitude, longitude], 13);
 
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution:
           '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       }).addTo(map);
 
-      // Add click event
+      // Add click event on map
       map.on("click", function (e) {
+        // Reveal the hidden form
+        form.classList.remove("hidden");
+        inputDistance.focus();
+        mapEvent = e;
+
         console.log("clicked");
         console.log(e.latlng);
-        const { lat, lng } = e.latlng;
-        L.marker([lat, lng])
-          .addTo(map)
-          // add popup effect and style
-          .bindPopup(
-            L.popup({
-              maxWidth: 250,
-              minWidth: 100,
-              autoClose: false,
-              closeOnClick: false,
-              className: "running-popup",
-            })
-          )
-          // Add popup Content
-          .setPopupContent("Work Out")
-          .openPopup();
       });
     },
     //   Error call back
@@ -58,3 +48,33 @@ if (navigator.geolocation)
       alert("Could not find location");
     }
   );
+
+//   Reveal marker on the map
+form.addEventListener("submit", function (e) {
+  inputDistance.value = inputDuration.value = inputCadence.value = inputElevation.value =
+    "";
+  // Appear Marker on the map when it's submitted
+  e.preventDefault();
+  const { lat, lng } = mapEvent.latlng;
+  L.marker([lat, lng])
+    .addTo(map)
+    // add popup effect and style
+    .bindPopup(
+      L.popup({
+        maxWidth: 250,
+        minWidth: 100,
+        autoClose: false,
+        closeOnClick: false,
+        className: "running-popup",
+      })
+    )
+    // Add popup Content
+    .setPopupContent("Work Out")
+    .openPopup();
+});
+
+// Add toggle on inputElevation and inputCadence
+inputType.addEventListener("change", function () {
+  inputElevation.closest(".form__row").classList.toggle(".form__row--hidden");
+  inputCadence.closest(".form__row").classList.toggle(".form__row--hidden");
+});

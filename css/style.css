@@ -144,11 +144,7 @@ LEFT SIDEBAR
   grid-template-columns: 1fr 1fr;
   gap: 0.5rem 2.5rem;
 
-  /* 
-==============
-Match height and activity boxes 
-==============
-*/
+  /* Match height and activity boxes */
 
   height: 9.25rem;
   transition: all 0.5s, transform 1ms;
