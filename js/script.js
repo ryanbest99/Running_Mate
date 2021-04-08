@@ -18,11 +18,46 @@ const inputElevation = document.querySelector(".form__input--elevation");
 let map, mapEvent;
 
 class App {
-  constructor() {}
+  constructor() {
+    this._getPosition();
+  }
 
-  _getPosition() {}
+  _getPosition() {
+    // Get Geolocation API
+    if (navigator.geolocation)
+      navigator.geolocation.getCurrentPosition(
+        // Success call back
+        this._loadMap.bind(this),
+        //   Error call back
+        function () {
+          alert("Could not find location");
+        }
+      );
+  }
 
-  _loadMap() {}
+  _loadMap(position) {
+    const { latitude, longitude } = position.coords;
+    console.log(latitude, longitude);
+
+    // Implement Leaflet
+    map = L.map("map").setView([latitude, longitude], 13);
+
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    }).addTo(map);
+
+    // Add click event on map
+    map.on("click", function (e) {
+      // Reveal the hidden form
+      form.classList.remove("hidden");
+      inputDistance.focus();
+      mapEvent = e;
+
+      console.log(e);
+      console.log(e.latlng);
+    });
+  }
 
   _showForm() {}
 
@@ -31,38 +66,7 @@ class App {
   _newWorkout() {}
 }
 
-// Get Geolocation API
-if (navigator.geolocation)
-  navigator.geolocation.getCurrentPosition(
-    // Success call back
-    function (position) {
-      const { latitude, longitude } = position.coords;
-      console.log(latitude, longitude);
-
-      // Implement Leaflet
-      map = L.map("map").setView([latitude, longitude], 13);
-
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution:
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      }).addTo(map);
-
-      // Add click event on map
-      map.on("click", function (e) {
-        // Reveal the hidden form
-        form.classList.remove("hidden");
-        inputDistance.focus();
-        mapEvent = e;
-
-        console.log(e);
-        console.log(e.latlng);
-      });
-    },
-    //   Error call back
-    function () {
-      alert("Could not find location");
-    }
-  );
+const app = new App();
 
 //   Reveal marker on the map
 form.addEventListener("submit", function (e) {
