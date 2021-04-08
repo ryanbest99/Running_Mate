@@ -16,6 +16,7 @@ const inputElevation = document.querySelector(".form__input--elevation");
   3. modify the popup and text */
 
 let map, mapEvent;
+
 // Get Geolocation API
 if (navigator.geolocation)
   navigator.geolocation.getCurrentPosition(
@@ -39,7 +40,7 @@ if (navigator.geolocation)
         inputDistance.focus();
         mapEvent = e;
 
-        console.log("clicked");
+        console.log(e);
         console.log(e.latlng);
       });
     },
@@ -75,6 +76,6 @@ form.addEventListener("submit", function (e) {
 
 // Add toggle on inputElevation and inputCadence
 inputType.addEventListener("change", function () {
-  inputElevation.closest(".form__row").classList.toggle(".form__row--hidden");
-  inputCadence.closest(".form__row").classList.toggle(".form__row--hidden");
+  inputElevation.closest(".form__row").classList.toggle("form__row--hidden");
+  inputCadence.closest(".form__row").classList.toggle("form__row--hidden");
 });
