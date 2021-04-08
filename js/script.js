@@ -15,8 +15,6 @@ const inputElevation = document.querySelector(".form__input--elevation");
   2. get leaflet.js library
   3. modify the popup and text */
 
-let map, mapEvent;
-
 class App {
   #map;
   #mapEvent;
