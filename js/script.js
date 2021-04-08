@@ -48,18 +48,18 @@ class App {
     }).addTo(map);
 
     // Add click event on map
-    map.on("click", function (e) {
-      // Reveal the hidden form
-      form.classList.remove("hidden");
-      inputDistance.focus();
-      mapEvent = e;
-
-      console.log(e);
-      console.log(e.latlng);
-    });
+    map.on("click", this._showForm.bind(this));
   }
 
-  _showForm() {}
+  _showForm(e) {
+    // Reveal the hidden form
+    form.classList.remove("hidden");
+    inputDistance.focus();
+    mapEvent = e;
+
+    console.log(e);
+    console.log(e.latlng);
+  }
 
   _toggleElevationField() {}
 
